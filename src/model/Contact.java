@@ -1,29 +1,21 @@
 package model;
 
-import java.util.ArrayList;
-
-public class Customer {
+public class Contact {
+    public static int MAX_ID = 0;
     private int id;
     private String name;
     private String email;
     private String phone;
-    private ArrayList<Contact> contacts;
 
-    public Customer(int id, String name, String email, String phone) {
-        this.id = id;
+    public Contact(String name, String email, String phone) {
+        this.id = ++MAX_ID;
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.contacts = new ArrayList<>();
     }
 
-    // Getters and setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public Contact(){
+        this.id = ++MAX_ID;
     }
 
     public String getName() {
@@ -50,16 +42,13 @@ public class Customer {
         this.phone = phone;
     }
 
-    public void AddContact(Contact contact) {
-        this.contacts.add(contact);
-    }
-
-    public ArrayList<Contact> getContacts() {
-        return contacts;
-    }
-
     @Override
     public String toString() {
-        return "Customer [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + "]";
+        return "Contact{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
     }
 }
