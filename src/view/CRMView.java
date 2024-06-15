@@ -74,7 +74,8 @@ public class CRMView {
     }
 
     private void viewSingleCustomer() {
-        System.out.println("######################## single customer data ##########################################");
+        System.out.println(
+                "######################## single customer data ##########################################");
         System.out.print("Enter customer ID to update: ");
         int id = scanner.nextInt();
         scanner.nextLine();
@@ -87,7 +88,8 @@ public class CRMView {
         System.out.println(customer);
         System.out.println("Customer contacts");
         customer.getContacts().forEach(item -> System.out.println("\t" + item));
-        System.out.println("######################## single customer data ##########################################");
+        System.out.println(
+                "######################## single customer data ##########################################");
     }
 
     private void updateCustomer() {
