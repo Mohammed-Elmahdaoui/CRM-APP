@@ -1,6 +1,8 @@
 package model;
 
 public class Article {
+  private static int lastId;
+
   private int id;
   private String ref;
   private String designation;

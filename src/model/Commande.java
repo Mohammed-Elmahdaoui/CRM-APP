@@ -10,15 +10,19 @@ public class Commande {
   private List<Integer> commandItemIds;
   private double total;
   private Date date;
-  private String heure;
 
   // Constructor
-  public Commande(int id, Date date, String heure) {
+  public Commande(int id, Date date) {
     this.id = id;
     this.date = date;
-    this.heure = heure;
     this.commandItemIds = new ArrayList<>();
     this.total = 0.0;
+  }
+  public Commande(int id, List<Integer> commandItemIds, double total, Date date) {
+    this.id = id;
+    this.commandItemIds = commandItemIds;
+    this.total = total;
+    this.date = date;
   }
 
   // Getters
@@ -38,10 +42,6 @@ public class Commande {
     return date;
   }
 
-  public String getHeure() {
-    return heure;
-  }
-
   // Setters
   public void setId(int id) {
     this.id = id;
@@ -57,10 +57,6 @@ public class Commande {
 
   public void setDate(Date date) {
     this.date = date;
-  }
-
-  public void setHeure(String heure) {
-    this.heure = heure;
   }
 
   // Methods to add and remove command items
@@ -79,7 +75,7 @@ public class Commande {
   @Override
   public String toString() {
     return "Commande [id=" + id + ", commandItemIds=" + commandItemIds + ", total=" + total
-        + ", date=" + date + ", heure=" + heure + "]";
+        + ", date=" + date + "]";
   }
 }
 
