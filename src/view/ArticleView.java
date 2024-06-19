@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import model.Article;
+import model.Command;
 
 import static utils.ConsoleHelpers.clearScreen;
 

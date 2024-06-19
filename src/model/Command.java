@@ -56,6 +56,10 @@ public class Command {
     public void AddArticle(Article article) {
         // set article to command
         this.articles.add(article);
+
+        // add command in article
+        article.addCommand(this);
+
         // set total
         this.total = this.total + article.getPrice();
     }
