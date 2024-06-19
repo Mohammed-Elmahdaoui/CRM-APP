@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -71,7 +72,7 @@ public class Command {
 
     // method to get all article from command
     public List<Article> getArticles() {
-        return articles;
+        return Collections.unmodifiableList(articles);
     }
 
     // toString method
