@@ -8,8 +8,8 @@ public class PaiementCheque extends Paiement {
   private int idBank;
 
   // Constructor
-  public PaiementCheque(int id, double montant, Date date, String nom, int idBank) {
-    super(id, montant, date);
+  public PaiementCheque(double montant, Date date, String nom, int idBank) {
+    super(montant, date);
     this.nom = nom;
     this.idBank = idBank;
   }

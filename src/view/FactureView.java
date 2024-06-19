@@ -49,14 +49,12 @@ public class FactureView {
     }
 
     private void createFacture() {
-        System.out.print("Enter facture ID: ");
-        int idFacture = scanner.nextInt();
-        System.out.print("Enter client ID: ");
+        System.out.print("Enter customer ID: ");
         int idClient = scanner.nextInt();
         System.out.print("Enter commande ID: ");
         int idCommande = scanner.nextInt();
 
-        factures.add(new Facture(idFacture, idClient, idCommande));
+        factures.add(new Facture(idClient, idCommande));
         System.out.println("Facture created.");
     }
 

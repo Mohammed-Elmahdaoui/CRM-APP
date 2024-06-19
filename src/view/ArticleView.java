@@ -2,7 +2,10 @@ package view;
 
 import java.util.List;
 import java.util.Scanner;
+
 import model.Article;
+
+import static utils.ConsoleHelpers.clearScreen;
 
 public class ArticleView {
     private List<Article> articles;
@@ -14,6 +17,7 @@ public class ArticleView {
     }
 
     public void showMenu() {
+        clearScreen();
         boolean exit = false;
         while (!exit) {
             System.out.println("Article Menu:");
@@ -31,7 +35,7 @@ public class ArticleView {
                     addArticle();
                     break;
                 case 2:
-                    viewArticles();
+                    viewArticles(false);
                     break;
                 case 3:
                     updateArticle();
@@ -49,30 +53,48 @@ public class ArticleView {
     }
 
     private void addArticle() {
-        System.out.print("Enter article ID: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();  // Consume newline
+        clearScreen();
+        System.out.println("########################### - Add article: - ###########################");
         System.out.print("Enter article reference: ");
-        String ref = scanner.nextLine();
+        var ref = scanner.nextLine();
         System.out.print("Enter article designation: ");
-        String designation = scanner.nextLine();
+        var designation = scanner.nextLine();
         System.out.print("Enter article price: ");
-        double prix = scanner.nextDouble();
-        System.out.print("Enter article quantity in stock: ");
-        int quantityStock = scanner.nextInt();
+        var price = scanner.nextDouble();
 
-        articles.add(new Article(id, ref, designation, prix, quantityStock));
+        articles.add(new Article(ref, designation, price));
         System.out.println("Article added.");
+        System.out.println("#######################################################################");
     }
 
-    private void viewArticles() {
-        System.out.println("Articles:");
+    private void viewArticles(boolean inOtherView) {
+        clearScreen();
+        if (inOtherView) {
+            System.out.println("Articles List :");
+        } else {
+            System.out.println("########################### - Articles List - ########################");
+        }
+
         for (Article article : articles) {
             System.out.println(article);
         }
+
+        if (articles.isEmpty()) {
+            System.out.println("No articles found.");
+        }
+
+        if (inOtherView) {
+            System.out.println("--------------");
+        } else {
+            System.out.println("#####################################################################");
+        }
+
     }
 
     private void updateArticle() {
+        clearScreen();
+        System.out.println("########################### - Update article: - ###########################");
+        viewArticles(true);
         System.out.print("Enter article ID to update: ");
         int id = scanner.nextInt();
         scanner.nextLine();  // Consume newline
@@ -84,21 +106,29 @@ public class ArticleView {
                 System.out.print("Enter new article designation: ");
                 article.setDesignation(scanner.nextLine());
                 System.out.print("Enter new article price: ");
-                article.setPrix(scanner.nextDouble());
-                System.out.print("Enter new article quantity in stock: ");
-                article.setQuantityStock(scanner.nextInt());
+                article.setPrice(scanner.nextDouble());
                 System.out.println("Article updated.");
+                System.out.println("#####################################################################");
                 return;
             }
         }
-        System.out.println("Article not found.");
+        System.out.printf("Article not found with this ID {%s}.%n", id);
+        System.out.println("#####################################################################");
     }
 
     private void deleteArticle() {
+        clearScreen();
+        System.out.println("########################### - Delete article: - ###########################");
+        viewArticles(true);
         System.out.print("Enter article ID to delete: ");
         int id = scanner.nextInt();
 
-        articles.removeIf(article -> article.getId() == id);
-        System.out.println("Article deleted.");
+        var result = articles.removeIf(article -> article.getId() == id);
+        if (result) {
+            System.out.println("Article deleted.");
+        } else {
+            System.out.printf("Article not found with this ID {%s}.%n", id);
+        }
+        System.out.println("###########################################################################");
     }
 }

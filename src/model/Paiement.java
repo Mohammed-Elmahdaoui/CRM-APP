@@ -4,13 +4,14 @@ import java.util.Date;
 
 
 public abstract class Paiement {
+  private static int MAX_ID = 0;
   private int id;
   private double montant;
   private Date date;
 
   // Constructor
-  public Paiement(int id, double montant, Date date) {
-    this.id = id;
+  public Paiement(double montant, Date date) {
+    this.id = ++MAX_ID;
     this.montant = montant;
     this.date = date;
   }
@@ -29,10 +30,6 @@ public abstract class Paiement {
   }
 
   // Setters
-  public void setId(int id) {
-    this.id = id;
-  }
-
   public void setMontant(double montant) {
     this.montant = montant;
   }

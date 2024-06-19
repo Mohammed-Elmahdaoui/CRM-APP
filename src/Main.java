@@ -1,25 +1,26 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
 import model.Article;
-import model.Commande;
+import model.Command;
 import model.Customer;
 import model.Facture;
 import view.ArticleView;
-import view.CommandeView;
+import view.CommandView;
 import view.CustomerView;
 import view.FactureView;
 
 public class Main {
-    private static List<Customer> customers = new ArrayList<>();
-    private static List<Article> articles = new ArrayList<>();
-    private static List<Commande> commandes = new ArrayList<>();
-    private static List<Facture> factures = new ArrayList<>();
+    private static final List<Customer> customers = new ArrayList<>();
+    private static final List<Article> articles = new ArrayList<>();
+    private static final List<Command> commands = new ArrayList<>();
+    private static final List<Facture> factures = new ArrayList<>();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         ArticleView articleView = new ArticleView(articles, scanner);
-        CommandeView commandeView = new CommandeView(commandes, scanner);
+        CommandView commandView = new CommandView(commands, articles, customers, scanner);
         FactureView factureView = new FactureView(factures, scanner);
         CustomerView customerView = new CustomerView(customers, scanner);
 
@@ -28,7 +29,7 @@ public class Main {
         while (!exit) {
             System.out.println("Main Menu:");
             System.out.println("1. Articles");
-            System.out.println("2. Commandes");
+            System.out.println("2. Commands");
             System.out.println("3. Factures");
             System.out.println("4. Customers");
             System.out.println("5. Exit");
@@ -41,7 +42,7 @@ public class Main {
                     articleView.showMenu();
                     break;
                 case 2:
-                    commandeView.showMenu();
+                    commandView.showMenu();
                     break;
                 case 3:
                     factureView.showMenu();

@@ -1,13 +1,14 @@
 package model;
 
 public class Facture {
-  private int idFacture;
+  private static int MAX_ID = 0;
+  private final int idFacture;
   private int idClient;
   private int idCommande;
 
   // Constructor
-  public Facture(int idFacture, int idClient, int idCommande) {
-    this.idFacture = idFacture;
+  public Facture(int idClient, int idCommande) {
+    this.idFacture = ++MAX_ID;
     this.idClient = idClient;
     this.idCommande = idCommande;
   }
@@ -26,10 +27,6 @@ public class Facture {
   }
 
   // Setters
-  public void setIdFacture(int idFacture) {
-    this.idFacture = idFacture;
-  }
-
   public void setIdClient(int idClient) {
     this.idClient = idClient;
   }

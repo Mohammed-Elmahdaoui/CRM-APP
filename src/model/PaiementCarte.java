@@ -9,9 +9,8 @@ public class PaiementCarte extends Paiement {
   private Date dateExpiration;
 
   // Constructor
-  public PaiementCarte(int id, double montant, Date date, String nom, String type,
-      Date dateExpiration) {
-    super(id, montant, date);
+  public PaiementCarte(double montant, Date date, String nom, String type, Date dateExpiration) {
+    super(montant, date);
     this.nom = nom;
     this.type = type;
     this.dateExpiration = dateExpiration;

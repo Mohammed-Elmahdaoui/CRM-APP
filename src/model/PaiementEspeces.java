@@ -7,8 +7,8 @@ public class PaiementEspeces extends Paiement {
   private boolean effectue;
 
   // Constructor
-  public PaiementEspeces(int id, double montant, Date date, boolean effectue) {
-    super(id, montant, date);
+  public PaiementEspeces(double montant, Date date, boolean effectue) {
+    super(montant, date);
     this.effectue = effectue;
   }
 

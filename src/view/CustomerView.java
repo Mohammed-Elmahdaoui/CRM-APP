@@ -2,11 +2,14 @@ package view;
 
 import java.util.List;
 import java.util.Scanner;
+
 import model.Customer;
 
+import static utils.ConsoleHelpers.clearScreen;
+
 public class CustomerView {
-    private List<Customer> customers;
-    private Scanner scanner;
+    private final List<Customer> customers;
+    private final Scanner scanner;
 
     public CustomerView(List<Customer> customers, Scanner scanner) {
         this.customers = customers;
@@ -31,7 +34,7 @@ public class CustomerView {
                     addCustomer();
                     break;
                 case 2:
-                    viewCustomers();
+                    viewCustomers(false);
                     break;
                 case 3:
                     updateCustomer();
@@ -49,9 +52,8 @@ public class CustomerView {
     }
 
     private void addCustomer() {
-        System.out.print("Enter customer ID: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();  // Consume newline
+        clearScreen();
+        System.out.println("########################### - Add customer: - ###########################");// Consume newline
         System.out.print("Enter customer name: ");
         String name = scanner.nextLine();
         System.out.print("Enter customer email: ");
@@ -59,18 +61,35 @@ public class CustomerView {
         System.out.print("Enter customer phone: ");
         String phone = scanner.nextLine();
 
-        customers.add(new Customer(id, name, email, phone));
+        customers.add(new Customer(name, email, phone));
         System.out.println("Customer added.");
+        System.out.println("#######################################################################");
     }
 
-    private void viewCustomers() {
-        System.out.println("Customers:");
+    private void viewCustomers(boolean inOtherView) {
+        clearScreen();
+        if (inOtherView) {
+            System.out.println("Customers List :");
+        } else {
+            System.out.println("########################### - Customers List - ########################");
+        }
+
         for (Customer customer : customers) {
             System.out.println(customer);
+        }
+
+        if (inOtherView) {
+            System.out.println("--------------");
+        } else {
+            System.out.println("#####################################################################");
         }
     }
 
     private void updateCustomer() {
+        clearScreen();
+        System.out.println("########################### - Update customer: - ###########################");
+        viewCustomers(true);
+
         System.out.print("Enter customer ID to update: ");
         int id = scanner.nextInt();
         scanner.nextLine();  // Consume newline
@@ -84,17 +103,27 @@ public class CustomerView {
                 System.out.print("Enter new customer phone: ");
                 customer.setPhone(scanner.nextLine());
                 System.out.println("Customer updated.");
+                System.out.println("#####################################################################");
                 return;
             }
         }
-        System.out.println("Customer not found.");
+        System.out.printf("Customer not found with this ID {%s}.%n", id);
+        System.out.println("#####################################################################");
     }
 
     private void deleteCustomer() {
+        clearScreen();
+        System.out.println("########################### - Delete article: - ###########################");
+        viewCustomers(true);
         System.out.print("Enter customer ID to delete: ");
         int id = scanner.nextInt();
 
-        customers.removeIf(customer -> customer.getId() == id);
-        System.out.println("Customer deleted.");
+        var result = customers.removeIf(customer -> customer.getId() == id);
+        if (result) {
+            System.out.println("Customer deleted.");
+        } else {
+            System.out.printf("Customer not found with this ID {%s}.%n", id);
+        }
+        System.out.println("###########################################################################");
     }
 }

@@ -14,7 +14,7 @@ public class CRMController {
     }
 
     public void addCustomer(String name, String email, String phone) {
-        customers.add(new Customer(nextId++, name, email, phone));
+        customers.add(new Customer(name, email, phone));
     }
 
     public List<Customer> getCustomers() {
