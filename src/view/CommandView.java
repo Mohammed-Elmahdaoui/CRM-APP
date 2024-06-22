@@ -31,24 +31,28 @@ public class CommandView {
             System.out.println("3. Delete Command");
             System.out.println("4. Back to Main Menu");
             System.out.print("Choose an option: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
 
-            switch (option) {
-                case 1:
-                    createCommand();
-                    break;
-                case 2:
-                    viewCommands(false);
-                    break;
-                case 3:
-                    deleteCommand();
-                    break;
-                case 4:
-                    exit = true;
-                    break;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+            try {
+                int option = scanner.nextInt();
+                scanner.nextLine();  // Consume newline
+                switch (option) {
+                    case 1:
+                        createCommand();
+                        break;
+                    case 2:
+                        viewCommands(false);
+                        break;
+                    case 3:
+                        deleteCommand();
+                        break;
+                    case 4:
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println("\uD83D\uDE14 Invalid option. Please try again.");
+                }
+            } catch (Exception e) {
+                System.out.println("\uD83D\uDE14 Invalid option. Please try again.");
             }
         }
     }
@@ -64,14 +68,20 @@ public class CommandView {
         System.out.println("-----------------------------------------------------------------");
 
         while (true) {
-            System.out.print("Please select customer ID from this list to create your new command :");
-            var customerId = scanner.nextInt();
-            var customer = customers.stream().filter(i -> i.getId() == customerId).findFirst();
+            System.out.print("Please select customer ID from this list to create your new command or 'I' to exit:");
+            var customerId = scanner.nextLine();
+
+            if (customerId.equals("I") || customerId.equals("i")) {
+                System.out.println("\uD83D\uDE2D Operation finished");
+                return;
+            }
+
+            var customer = customers.stream().filter(i -> i.getId() == Integer.parseInt(customerId)).findFirst();
             if (customer.isPresent()) {
                 command.setCustomer(customer.get());
                 break;
             } else {
-                System.out.println("Invalid customer id. Please try again.");
+                System.out.println("\uD83D\uDE14 Invalid customer id. Please try again.");
             }
         }
 
@@ -94,7 +104,7 @@ public class CommandView {
             }
             var article = articles.stream().filter(i -> i.getId() == Integer.parseInt(articleId)).findFirst();
             if (article.isEmpty()) {
-                System.out.println("Invalid ID. Please try again.");
+                System.out.println("\uD83D\uDE14 Invalid ID. Please try again.");
                 continue;
             }
             command.AddArticle(article.get());
@@ -117,6 +127,11 @@ public class CommandView {
             System.out.println(command);
         }
 
+        if (commands.isEmpty()) {
+            clearScreen();
+            System.out.println("\uD83D\uDE2D No command found :");
+        }
+
         if (inOtherView) {
             System.out.println("--------------");
         } else {
@@ -128,15 +143,20 @@ public class CommandView {
         clearScreen();
         System.out.println("########################### - Delete command: - ###########################");
         viewCommands(true);
-        System.out.print("Enter command ID to delete: ");
-        int id = scanner.nextInt();
+        System.out.print("Enter command ID to delete or 'I' to exit: ");
+        var id = scanner.nextLine();
 
-        var result = commands.removeIf(command -> command.getId() == id);
+        if (id.equals("I") || id.equals("i")) {
+            System.out.println("\uD83D\uDE2D Operation finished");
+            return;
+        }
+
+        var result = commands.removeIf(command -> command.getId() == Integer.parseInt(id));
         if (result) {
             clearScreen();
-            System.out.println("Command deleted.");
+            System.out.println("\uD83D\uDE00 Command deleted.");
         } else {
-            System.out.printf("Command not found with this ID {%s}.%n", id);
+            System.out.printf("\uD83D\uDE14 Command not found with this ID {%s}.%n", id);
         }
         System.out.println("###########################################################################");
     }
