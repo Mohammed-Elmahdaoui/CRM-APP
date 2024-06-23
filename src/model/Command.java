@@ -71,6 +71,7 @@ public class Command {
 
         // set total
         this.total = this.total + article.getPrice();
+        this.rest = this.rest + article.getPrice();
     }
 
     public void AddPaiement(Paiement paiement) {
