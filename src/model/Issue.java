@@ -9,12 +9,11 @@ public class Issue {
   private Date createdAt;
   private String feedback;
   private String status;
-  private int customerId;
+  private Customer customer;
 
   // Constructor
-  public Issue(int customerId, String detail, Date createdAt, String feedback, String status) {
+  public Issue(String detail, Date createdAt, String feedback, String status) {
     this.id = ++MAX_ID;
-    this.customerId = customerId;
     this.detail = detail;
     this.createdAt = createdAt;
     this.feedback = feedback;
@@ -58,18 +57,20 @@ public class Issue {
     this.status = status;
   }
 
-  public int getCustomerId() {
-    return customerId;
+  public Customer getCustomer() {
+    return customer;
   }
 
-  public void setCustomerId(int customerId) {
-    this.customerId = customerId;
+  public void setCustomer(Customer customer) {
+    this.customer = customer;
+
+    customer.addIssue(this);
   }
 
   @Override
   public String toString() {
     return "Issue{" + "id=" + id + ", detail='" + detail + '\'' + ", createdAt=" + createdAt
-        + ", feedback='" + feedback + '\'' + ", status='" + status + '\'' + ", customerId="
-        + customerId + '}';
+        + ", feedback='" + feedback + '\'' + ", status='" + status + '\'' + ", customer="
+        + customer + '}';
   }
 }

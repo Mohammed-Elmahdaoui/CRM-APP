@@ -81,9 +81,6 @@ public class CommandView {
             }
         }
 
-        // This is to prevent an error from occurring when using `scanner.nextInt()` followed by `scanner.nextLine()`
-        scanner.nextLine();
-
 
         System.out.println("--------------------------- articles ---------------------------");
         for (var article : articles) {

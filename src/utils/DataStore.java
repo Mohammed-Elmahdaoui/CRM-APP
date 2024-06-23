@@ -27,10 +27,6 @@ public class DataStore {
         return commands;
     }
 
-    public static List<Facture> getFactures() {
-        return factures;
-    }
-
     public static List<Issue> getIssues() {
         return issues;
     }

@@ -30,24 +30,28 @@ public class PaiementView {
       System.out.println("3. Delete Paiement");
       System.out.println("0. Back to Main Menu");
       System.out.print("Choose an option: ");
-      int option = scanner.nextInt();
-      scanner.nextLine(); // Consume newline
+      try {
+        int option = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
 
-      switch (option) {
-        case 1:
-          addPaiement();
-          break;
-        case 2:
-          viewPaiements();
-          break;
-        case 3:
-          deletePaiement();
-          break;
-        case 0:
-          exit = true;
-          break;
-        default:
-          System.out.println("Invalid option. Please try again.");
+        switch (option) {
+          case 1:
+            addPaiement();
+            break;
+          case 2:
+            viewPaiements();
+            break;
+          case 3:
+            deletePaiement();
+            break;
+          case 0:
+            exit = true;
+            break;
+          default:
+            System.out.println("Invalid option. Please try again.");
+        }
+      } catch (Exception e) {
+        System.out.println("Invalid option. Please try again.");
       }
     }
   }
@@ -55,9 +59,9 @@ public class PaiementView {
   private void addPaiement() {
     System.out.println("########################### - Add Paiement - ###########################");
     Customer selectedCustomer = CustomerUtil.selectCustomer(customers);
-    List<Command> filtredCommands =
-        commands.stream().filter(command -> command.getCustomer().getId() == selectedCustomer.getId())
-            .collect(Collectors.toList());
+    List<Command> filtredCommands = commands.stream()
+        .filter(command -> command.getCustomer().getId() == selectedCustomer.getId())
+        .collect(Collectors.toList());
     scanner.nextLine(); // Consume newline
     if (filtredCommands.isEmpty()) {
       System.out.println("No commands found.");
@@ -68,12 +72,10 @@ public class PaiementView {
       System.out.print("Enter montant: ");
       double montant = scanner.nextDouble();
       scanner.nextLine(); // Consume newline
-      System.out.print("Enter date (yyyy-MM-dd): ");
-      String dateString = scanner.nextLine();
-      Date date = parseDate(dateString);
 
-      Paiement paiement = new Paiement(selectedCommand.getId(), montant, date);
+      Paiement paiement = new Paiement(montant, new Date());
       paiements.add(paiement);
+      selectedCommand.AddPaiement(paiement);
       System.out.println("Paiement added.");
     }
     System.out.println("#######################################################################");
@@ -82,17 +84,17 @@ public class PaiementView {
   private void viewPaiements() {
     System.out.println("########################### - View Paiements - #########################");
     Customer selectedCustomer = CustomerUtil.selectCustomer(customers);
-    List<Command> filtredCommands =
-        commands.stream().filter(command -> command.getCustomer().getId() == selectedCustomer.getId())
-            .collect(Collectors.toList());
+    List<Command> filtredCommands = commands.stream()
+        .filter(command -> command.getCustomer().getId() == selectedCustomer.getId())
+        .collect(Collectors.toList());
     scanner.nextLine(); // Consume newline
     if (filtredCommands.isEmpty()) {
       System.out.println("No commands found.");
     } else {
       Command selectedCommand = CommandUtil.selectCommand(filtredCommands);
-      List<Paiement> filtredPaiements =
-          paiements.stream().filter(paiement -> paiement.getCommandId() == selectedCommand.getId())
-              .collect(Collectors.toList());
+      List<Paiement> filtredPaiements = paiements.stream()
+          .filter(paiement -> paiement.getCommand().getId() == selectedCommand.getId())
+          .collect(Collectors.toList());
       scanner.nextLine(); // Consume newline
       if (filtredPaiements.isEmpty()) {
         System.out.println("No paiements found.");
@@ -108,23 +110,25 @@ public class PaiementView {
   private void deletePaiement() {
     System.out.println("########################### - Delete Paiement - ########################");
     Customer selectedCustomer = CustomerUtil.selectCustomer(customers);
-    List<Command> filtredCommands =
-        commands.stream().filter(command -> command.getCustomer().getId() == selectedCustomer.getId())
-            .collect(Collectors.toList());
+    List<Command> filtredCommands = commands.stream()
+        .filter(command -> command.getCustomer().getId() == selectedCustomer.getId())
+        .collect(Collectors.toList());
     scanner.nextLine(); // Consume newline
     if (filtredCommands.isEmpty()) {
       System.out.println("No commands found.");
     } else {
       Command selectedCommand = CommandUtil.selectCommand(filtredCommands);
-      List<Paiement> filtredPaiements =
-          paiements.stream().filter(paiement -> paiement.getCommandId() == selectedCommand.getId())
-              .collect(Collectors.toList());
+      List<Paiement> filtredPaiements = paiements.stream()
+          .filter(paiement -> paiement.getCommand().getId() == selectedCommand.getId())
+          .collect(Collectors.toList());
       scanner.nextLine(); // Consume newline
       if (filtredPaiements.isEmpty()) {
         System.out.println("No paiements found.");
       } else {
         Paiement selectedPaiement = PaiementUtil.selectPaiement(filtredPaiements);
-        boolean removed = paiements.removeIf(paiement -> paiement.getId() == selectedPaiement.getId());
+        selectedCommand.RemovePaiement(selectedPaiement);
+        boolean removed =
+            paiements.removeIf(paiement -> paiement.getId() == selectedPaiement.getId());
         if (removed) {
           System.out.println("Paiement deleted.");
         } else {
@@ -133,15 +137,6 @@ public class PaiementView {
       }
     }
     System.out.println("#######################################################################");
-  }
-
-  private Date parseDate(String dateString) {
-    try {
-      return new Date(dateString);
-    } catch (Exception e) {
-      System.out.println("Invalid date format. Using current date.");
-      return new Date(); // Use current date if parsing fails
-    }
   }
 
 }

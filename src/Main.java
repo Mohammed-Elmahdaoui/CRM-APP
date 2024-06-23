@@ -21,36 +21,40 @@ public class Main {
         while (!exit) {
             System.out.println("Main Menu:");
             System.out.println("1. Articles");
-            System.out.println("2. Commands");
-            System.out.println("3. Paiement");
-            System.out.println("4. Customers");
+            System.out.println("2. Customers");
+            System.out.println("3. Commands");
+            System.out.println("4. Paiement");
             System.out.println("5. Repport issue");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
-            int option = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            try {
+                int option = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
 
-            switch (option) {
-                case 1:
-                    articleView.showMenu();
-                    break;
-                case 2:
-                    commandView.showMenu();
-                    break;
-                case 3:
-                    paiementView.showMenu();
-                    break;
-                case 4:
-                    customerView.showMenu();
-                    break;
-                case 5:
-                    issueView.showMenu();
-                    break;
-                case 0:
-                    exit = true;
-                    break;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+                switch (option) {
+                    case 1:
+                        articleView.showMenu();
+                        break;
+                    case 2:
+                        customerView.showMenu();
+                        break;
+                    case 3:
+                        commandView.showMenu();
+                        break;
+                    case 4:
+                        paiementView.showMenu();
+                        break;
+                    case 5:
+                        issueView.showMenu();
+                        break;
+                    case 0:
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println("Invalid option. Please try again.");
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid option. Please try again.");
             }
         }
 

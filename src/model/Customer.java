@@ -11,6 +11,7 @@ public class Customer {
     private String email;
     private String phone;
     private final List<Command> commands;
+    private final List<Issue> issues;
 
     public Customer(String name, String email, String phone) {
         this.id = ++MAX_ID;
@@ -18,6 +19,7 @@ public class Customer {
         this.email = email;
         this.phone = phone;
         this.commands = new ArrayList<>();
+        this.issues = new ArrayList<>();
     }
 
     // Getters and setters
@@ -49,8 +51,12 @@ public class Customer {
         this.phone = phone;
     }
 
+    public List<Issue> getIssues() {
+        return Collections.unmodifiableList(issues);
+    }
+
     public List<Command> getCommands() {
-        return Collections.unmodifiableList(commands) ;
+        return Collections.unmodifiableList(commands);
     }
 
     public void addCommand(Command command) {
@@ -59,6 +65,16 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone + "]";
+        return "Customer [id=" + id + ", name=" + name + ", email=" + email + ", phone=" + phone
+                + "]";
     }
+
+    public void addIssue(Issue issue) {
+        this.issues.add(issue);
+    }
+    public void removeIssue(Issue issue) {
+        this.issues.remove(issue);
+    }
+
+
 }

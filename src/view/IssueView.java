@@ -30,27 +30,30 @@ public class IssueView {
       System.out.println("4. Delete Issue");
       System.out.println("0. Back to Main Menu");
       System.out.print("Choose an option: ");
-      int option = scanner.nextInt();
-      scanner.nextLine(); // Consume newline
-
-      switch (option) {
-        case 1:
-          addIssue();
-          break;
-        case 2:
-          viewIssues();
-          break;
-        case 3:
-          updateIssue();
-          break;
-        case 4:
-          deleteIssue();
-          break;
-        case 0:
-          exit = true;
-          break;
-        default:
-          System.out.println("Invalid option. Please try again.");
+      try {
+        int option = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+        switch (option) {
+          case 1:
+            addIssue();
+            break;
+          case 2:
+            viewIssues();
+            break;
+          case 3:
+            updateIssue();
+            break;
+          case 4:
+            deleteIssue();
+            break;
+          case 0:
+            exit = true;
+            break;
+          default:
+            System.out.println("Invalid option. Please try again.");
+        }
+      } catch (Exception e) {
+        System.out.println("Invalid option. Please try again.");
       }
     }
   }
@@ -67,7 +70,10 @@ public class IssueView {
     System.out.print("Enter issue status: ");
     String status = scanner.nextLine();
 
-    issues.add(new Issue(selectedCustomer.getId(), detail, createdAt, feedback, status));
+    Issue newIssue = new Issue(detail, createdAt, feedback, status);
+    issues.add(newIssue);
+    selectedCustomer.addIssue(newIssue);
+
     System.out.println("Issue added.");
     System.out.println("#######################################################################");
   }
@@ -79,7 +85,7 @@ public class IssueView {
     System.out.println("########################### - Issues List - ########################");
     Customer selectedCustomer = CustomerUtil.selectCustomer(customers);
     List<Issue> filtredIssues =
-        issues.stream().filter(issue -> issue.getCustomerId() == selectedCustomer.getId())
+        issues.stream().filter(issue -> issue.getCustomer().getId() == selectedCustomer.getId())
             .collect(Collectors.toList());
     scanner.nextLine(); // Consume newline
     if (filtredIssues.isEmpty()) {
@@ -97,7 +103,7 @@ public class IssueView {
     System.out.println("########################### - Update issue: - ###########################");
     Customer selectedCustomer = CustomerUtil.selectCustomer(customers);
     List<Issue> filtredIssues =
-        issues.stream().filter(issue -> issue.getCustomerId() == selectedCustomer.getId())
+        issues.stream().filter(issue -> issue.getCustomer().getId() == selectedCustomer.getId())
             .collect(Collectors.toList());
     scanner.nextLine(); // Consume newline
     if (filtredIssues.isEmpty()) {
@@ -118,13 +124,14 @@ public class IssueView {
     System.out.println("########################### - Delete issue: - ###########################");
     Customer selectedCustomer = CustomerUtil.selectCustomer(customers);
     List<Issue> filtredIssues =
-        issues.stream().filter(issue -> issue.getCustomerId() == selectedCustomer.getId())
+        issues.stream().filter(issue -> issue.getCustomer().getId() == selectedCustomer.getId())
             .collect(Collectors.toList());
     scanner.nextLine(); // Consume newline
     if (filtredIssues.isEmpty()) {
       System.out.println("No issues found.");
     } else {
       Issue selectedIssue = IssueUtil.selectIssue(filtredIssues);
+      selectedCustomer.removeIssue(selectedIssue);
       var result = issues.removeIf(issue -> issue.getId() == selectedIssue.getId());
       if (result) {
         System.out.println("Issue deleted.");

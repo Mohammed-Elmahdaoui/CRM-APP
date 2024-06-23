@@ -8,12 +8,11 @@ public class Paiement {
   private int id;
   private double montant;
   private Date date;
-  private int commandId;
+  private Command command;
 
   // Constructor
-  public Paiement(int commandId, double montant, Date date) {
+  public Paiement(double montant, Date date) {
     this.id = ++MAX_ID;
-    this.commandId = commandId;
     this.montant = montant;
     this.date = date;
   }
@@ -22,8 +21,8 @@ public class Paiement {
   public int getId() {
     return id;
   }
-  public int getCommandId() {
-    return commandId;
+  public Command getCommand() {
+    return command;
   }
 
   public double getMontant() {
@@ -35,8 +34,8 @@ public class Paiement {
   }
 
   // Setters
-  public void setCommandId(int commandId) {
-    this.commandId = commandId;
+  public void setCommand(Command command) {
+    this.command = command;
   }
   
   public void setMontant(double montant) {
@@ -50,7 +49,11 @@ public class Paiement {
   // toString method
   @Override
   public String toString() {
-    return "Paiement [id=" + id + ", commandId=" + commandId + ", montant=" + montant + ", date=" + date + "]";
+    return "Paiement [id=" + id + ", command=" + command + ", montant=" + montant + ", date=" + date + "]";
+  }
+
+  public void addCommand(Command command) {
+    this.command=command;
   }
 }
 

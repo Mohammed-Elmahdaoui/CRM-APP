@@ -10,7 +10,9 @@ public class Command {
     private static int MAX_ID = 0;
     private final int id;
     private final List<Article> articles;
+    private final List<Paiement> paiements;
     private double total;
+    private double rest;
     private LocalDateTime date;
     private Customer customer;
 
@@ -19,7 +21,9 @@ public class Command {
         this.id = ++MAX_ID;
         this.date = LocalDateTime.now();
         this.articles = new ArrayList<Article>();
+        this.paiements = new ArrayList<Paiement>();
         this.total = 0.0;
+        this.rest = 0.0;
     }
 
     // Getters
@@ -29,6 +33,10 @@ public class Command {
 
     public double getTotal() {
         return total;
+    }
+
+    public double getRest() {
+        return rest;
     }
 
     public LocalDateTime getDate() {
@@ -65,9 +73,28 @@ public class Command {
         this.total = this.total + article.getPrice();
     }
 
+    public void AddPaiement(Paiement paiement) {
+        // set article to command
+        this.paiements.add(paiement);
+
+        // add command in article
+        paiement.addCommand(this);
+
+        // set total
+        this.rest = this.total - paiements.stream().mapToDouble(i -> i.getMontant()).sum();
+    }
+
     // methods to remove article from command
     public boolean RemoveArticle(Article article) {
         return this.articles.remove(article);
+    }
+
+    public boolean RemovePaiement(Paiement paiement) {
+        boolean done = this.paiements.remove(paiement);
+        if (done) {
+            this.rest += paiement.getMontant();
+        }
+        return done;
     }
 
     // method to get all article from command
@@ -83,13 +110,8 @@ public class Command {
             articlesString.append(article.toString()).append("\n");
         }
 
-        return "Command{" +
-                "id=" + id +
-                ", articles=\n" + articlesString +
-                ", total=" + total +
-                ", date=" + date +
-                ", customer=" + customer.getName() +
-                '}';
+        return "Command{" + "id=" + id + ", articles=\n" + articlesString + ", total=" + total
+                + ", rest=" + rest + ", date=" + date + ", customer=" + customer.getName() + '}';
     }
 }
 
