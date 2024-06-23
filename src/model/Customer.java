@@ -71,7 +71,10 @@ public class Customer {
 
     public void addIssue(Issue issue) {
         this.issues.add(issue);
+
+        issue.setCustomer(this);
     }
+
     public void removeIssue(Issue issue) {
         this.issues.remove(issue);
     }
