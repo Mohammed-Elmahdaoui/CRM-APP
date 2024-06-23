@@ -4,17 +4,15 @@ import java.util.List;
 import java.util.Scanner;
 
 import model.Customer;
-
+import utils.DataStore;
+import utils.ScannerUtil;
 import static utils.ConsoleHelpers.clearScreen;
 
 public class CustomerView {
-    private final List<Customer> customers;
-    private final Scanner scanner;
+    private final List<Customer> customers= DataStore.getCustomers();
+    private Scanner scanner = ScannerUtil.getScanner();
 
-    public CustomerView(List<Customer> customers, Scanner scanner) {
-        this.customers = customers;
-        this.scanner = scanner;
-    }
+    public CustomerView() {}
 
     public void showMenu() {
         boolean exit = false;
@@ -24,7 +22,7 @@ public class CustomerView {
             System.out.println("2. View Customers");
             System.out.println("3. Update Customer");
             System.out.println("4. Delete Customer");
-            System.out.println("5. Back to Main Menu");
+            System.out.println("0. Back to Main Menu");
             System.out.print("Choose an option: ");
             int option = scanner.nextInt();
             scanner.nextLine();  // Consume newline
@@ -42,7 +40,7 @@ public class CustomerView {
                 case 4:
                     deleteCustomer();
                     break;
-                case 5:
+                case 0:
                     exit = true;
                     break;
                 default:

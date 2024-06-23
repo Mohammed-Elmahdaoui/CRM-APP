@@ -5,16 +5,16 @@ import java.util.Scanner;
 
 import model.Article;
 import model.Command;
-
+import model.Customer;
+import utils.DataStore;
+import utils.ScannerUtil;
 import static utils.ConsoleHelpers.clearScreen;
 
 public class ArticleView {
-    private List<Article> articles;
-    private Scanner scanner;
+    private final List<Article> articles = DataStore.getArticles();
+    private final Scanner scanner = ScannerUtil.getScanner();
 
-    public ArticleView(List<Article> articles, Scanner scanner) {
-        this.articles = articles;
-        this.scanner = scanner;
+    public ArticleView() {
     }
 
     public void showMenu() {
@@ -26,7 +26,7 @@ public class ArticleView {
             System.out.println("2. View Articles");
             System.out.println("3. Update Article");
             System.out.println("4. Delete Article");
-            System.out.println("5. Back to Main Menu");
+            System.out.println("0. Back to Main Menu");
             System.out.print("Choose an option: ");
             int option = scanner.nextInt();
             scanner.nextLine();  // Consume newline
@@ -44,7 +44,7 @@ public class ArticleView {
                 case 4:
                     deleteArticle();
                     break;
-                case 5:
+                case 0:
                     exit = true;
                     break;
                 default:

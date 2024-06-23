@@ -1,28 +1,20 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-
-import model.Article;
-import model.Command;
-import model.Customer;
-import model.Facture;
+import utils.ScannerUtil;
 import view.ArticleView;
 import view.CommandView;
 import view.CustomerView;
-import view.FactureView;
+import view.IssueView;
+import view.PaiementView;
 
 public class Main {
-    private static final List<Customer> customers = new ArrayList<>();
-    private static final List<Article> articles = new ArrayList<>();
-    private static final List<Command> commands = new ArrayList<>();
-    private static final List<Facture> factures = new ArrayList<>();
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        ArticleView articleView = new ArticleView(articles, scanner);
-        CommandView commandView = new CommandView(commands, articles, customers, scanner);
-        FactureView factureView = new FactureView(factures, scanner);
-        CustomerView customerView = new CustomerView(customers, scanner);
+        Scanner scanner = ScannerUtil.getScanner();
+        ArticleView articleView = new ArticleView();
+        CommandView commandView = new CommandView();
+        PaiementView paiementView = new PaiementView();
+        CustomerView customerView = new CustomerView();
+        IssueView issueView = new IssueView();
 
         boolean exit = false;
 
@@ -30,9 +22,10 @@ public class Main {
             System.out.println("Main Menu:");
             System.out.println("1. Articles");
             System.out.println("2. Commands");
-            System.out.println("3. Factures");
+            System.out.println("3. Paiement");
             System.out.println("4. Customers");
-            System.out.println("5. Exit");
+            System.out.println("5. Repport issue");
+            System.out.println("0. Exit");
             System.out.print("Choose an option: ");
             int option = scanner.nextInt();
             scanner.nextLine(); // Consume newline
@@ -45,12 +38,15 @@ public class Main {
                     commandView.showMenu();
                     break;
                 case 3:
-                    factureView.showMenu();
+                    paiementView.showMenu();
                     break;
                 case 4:
                     customerView.showMenu();
                     break;
                 case 5:
+                    issueView.showMenu();
+                    break;
+                case 0:
                     exit = true;
                     break;
                 default:

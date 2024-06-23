@@ -6,21 +6,17 @@ import java.util.Scanner;
 import model.Article;
 import model.Command;
 import model.Customer;
-
+import utils.DataStore;
+import utils.ScannerUtil;
 import static utils.ConsoleHelpers.clearScreen;
 
 public class CommandView {
-    private final List<Command> commands;
-    private final Scanner scanner;
-    private final List<Article> articles;
-    private final List<Customer> customers;
+    private final List<Command> commands = DataStore.getCommands();
+    private final List<Article> articles = DataStore.getArticles();
+    private final List<Customer> customers = DataStore.getCustomers();
+    private final Scanner scanner = ScannerUtil.getScanner();
 
-    public CommandView(List<Command> commands, List<Article> articles, List<Customer> customers, Scanner scanner) {
-        this.commands = commands;
-        this.scanner = scanner;
-        this.articles = articles;
-        this.customers = customers;
-    }
+    public CommandView() {}
 
     public void showMenu() {
         boolean exit = false;
@@ -29,7 +25,7 @@ public class CommandView {
             System.out.println("1. Create Command");
             System.out.println("2. View Commands");
             System.out.println("3. Delete Command");
-            System.out.println("4. Back to Main Menu");
+            System.out.println("0. Back to Main Menu");
             System.out.print("Choose an option: ");
             int option = scanner.nextInt();
             scanner.nextLine();  // Consume newline
@@ -44,7 +40,7 @@ public class CommandView {
                 case 3:
                     deleteCommand();
                     break;
-                case 4:
+                case 0:
                     exit = true;
                     break;
                 default:
