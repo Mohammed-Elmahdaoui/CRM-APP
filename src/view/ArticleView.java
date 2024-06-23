@@ -28,27 +28,31 @@ public class ArticleView {
             System.out.println("4. Delete Article");
             System.out.println("0. Back to Main Menu");
             System.out.print("Choose an option: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
 
-            switch (option) {
-                case 1:
-                    addArticle();
-                    break;
-                case 2:
-                    viewArticles(false);
-                    break;
-                case 3:
-                    updateArticle();
-                    break;
-                case 4:
-                    deleteArticle();
-                    break;
-                case 0:
-                    exit = true;
-                    break;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+            try {
+                int option = scanner.nextInt();
+                scanner.nextLine();  // Consume newline
+                switch (option) {
+                    case 1:
+                        addArticle();
+                        break;
+                    case 2:
+                        viewArticles(false);
+                        break;
+                    case 3:
+                        updateArticle();
+                        break;
+                    case 4:
+                        deleteArticle();
+                        break;
+                    case 0:
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println("\uD83D\uDE14 Invalid option. Please try again.");
+                }
+            } catch (Exception e) {
+                System.out.println("\uD83D\uDE14 Invalid option. Please try again.");
             }
         }
     }
@@ -56,15 +60,24 @@ public class ArticleView {
     private void addArticle() {
         clearScreen();
         System.out.println("########################### - Add article: - ###########################");
-        System.out.print("Enter article reference: ");
+        System.out.print("⌨ Enter article reference: ");
         var ref = scanner.nextLine();
-        System.out.print("Enter article designation: ");
+        System.out.print("⌨ Enter article designation: ");
         var designation = scanner.nextLine();
-        System.out.print("Enter article price: ");
-        var price = scanner.nextDouble();
-
+        double price = 0.0;
+        while (true) {
+            try {
+                System.out.print("⌨ Enter article price: ");
+                price = scanner.nextDouble();
+                break;
+            } catch (Exception e) {
+                System.out.println("\uD83D\uDE14 Invalid article price. Please try again.");
+                // this line for avoid error happening  when calling nextDouble
+                scanner.nextLine();
+            }
+        }
         articles.add(new Article(ref, designation, price));
-        System.out.println("Article added.");
+        System.out.println("\uD83D\uDE00 Article added.");
         System.out.println("#######################################################################");
     }
 
@@ -81,7 +94,7 @@ public class ArticleView {
         }
 
         if (articles.isEmpty()) {
-            System.out.println("No articles found.");
+            System.out.println("\uD83D\uDE14 No articles found.");
         }
 
         if (inOtherView) {
@@ -96,19 +109,28 @@ public class ArticleView {
         clearScreen();
         System.out.println("########################### - Update article: - ###########################");
         viewArticles(true);
-        System.out.print("Enter article ID to update: ");
+        System.out.print("⌨ Enter article ID to update: ");
         int id = scanner.nextInt();
         scanner.nextLine();  // Consume newline
 
         for (Article article : articles) {
             if (article.getId() == id) {
-                System.out.print("Enter new article reference: ");
+                System.out.print("⌨ Enter new article reference: ");
                 article.setRef(scanner.nextLine());
-                System.out.print("Enter new article designation: ");
+                System.out.print("⌨ Enter new article designation: ");
                 article.setDesignation(scanner.nextLine());
-                System.out.print("Enter new article price: ");
-                article.setPrice(scanner.nextDouble());
-                System.out.println("Article updated.");
+                while (true) {
+                    try {
+                        System.out.print("⌨ Enter article price: ");
+                        article.setPrice(scanner.nextDouble());
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Invalid article price. Please try again.");
+                        // this line for avoid error happening  when calling nextDouble
+                        scanner.nextLine();
+                    }
+                }
+                System.out.println("\uD83D\uDE00 Article updated.");
                 System.out.println("#####################################################################");
                 return;
             }
@@ -121,14 +143,19 @@ public class ArticleView {
         clearScreen();
         System.out.println("########################### - Delete article: - ###########################");
         viewArticles(true);
-        System.out.print("Enter article ID to delete: ");
-        int id = scanner.nextInt();
+        System.out.print("⌨ Enter article ID to delete or 'I' to exit: ");
+        var id = scanner.nextLine();
 
-        var result = articles.removeIf(article -> article.getId() == id);
+        if (id.equals("I") || id.equals("i")) {
+            System.out.println("\uD83D\uDE2D Operation finished");
+            return;
+        }
+
+        var result = articles.removeIf(article -> article.getId() == Integer.parseInt(id));
         if (result) {
-            System.out.println("Article deleted.");
+            System.out.println("\uD83D\uDE00 Article deleted.");
         } else {
-            System.out.printf("Article not found with this ID {%s}.%n", id);
+            System.out.printf("\uD83D\uDE14 Article not found with this ID {%s}.%n", id);
         }
         System.out.println("###########################################################################");
     }

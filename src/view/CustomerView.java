@@ -7,6 +7,7 @@ import model.Customer;
 import utils.DataStore;
 import utils.ScannerUtil;
 import static utils.ConsoleHelpers.clearScreen;
+import static utils.EmailValidator.validate;
 
 public class CustomerView {
     private final List<Customer> customers= DataStore.getCustomers();
@@ -17,34 +18,38 @@ public class CustomerView {
     public void showMenu() {
         boolean exit = false;
         while (!exit) {
-            System.out.println("Customer Menu:");
+            System.out.println("️⌨ Customer Menu:");
             System.out.println("1. Add Customer");
             System.out.println("2. View Customers");
             System.out.println("3. Update Customer");
             System.out.println("4. Delete Customer");
             System.out.println("0. Back to Main Menu");
             System.out.print("Choose an option: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
 
-            switch (option) {
-                case 1:
-                    addCustomer();
-                    break;
-                case 2:
-                    viewCustomers(false);
-                    break;
-                case 3:
-                    updateCustomer();
-                    break;
-                case 4:
-                    deleteCustomer();
-                    break;
-                case 0:
-                    exit = true;
-                    break;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+            try {
+                int option = scanner.nextInt();
+                scanner.nextLine();  // Consume newline
+                switch (option) {
+                    case 1:
+                        addCustomer();
+                        break;
+                    case 2:
+                        viewCustomers(false);
+                        break;
+                    case 3:
+                        updateCustomer();
+                        break;
+                    case 4:
+                        deleteCustomer();
+                        break;
+                    case 0:
+                        exit = true;
+                        break;
+                    default:
+                        System.out.println("\uD83D\uDE14 Invalid option. Please try again.");
+                }
+            } catch (Exception e) {
+                System.out.println("\uD83D\uDE14 Invalid option. Please try again.");
             }
         }
     }
@@ -52,15 +57,28 @@ public class CustomerView {
     private void addCustomer() {
         clearScreen();
         System.out.println("########################### - Add customer: - ###########################");// Consume newline
-        System.out.print("Enter customer name: ");
+        System.out.print("⌨ Enter customer name: ");
         String name = scanner.nextLine();
-        System.out.print("Enter customer email: ");
-        String email = scanner.nextLine();
-        System.out.print("Enter customer phone: ");
+
+        // validate email
+        String email = "";
+        while (true) {
+            System.out.print("⌨ Enter customer email: ");
+            String userEmail = scanner.nextLine();
+            if (validate(userEmail)) {
+                email = userEmail;
+                break;
+            } else {
+                System.out.println("\uD83D\uDE14 Invalid email. Please try again.");
+            }
+        }
+
+        // validate phone
+        System.out.print("⌨ Enter customer phone: ");
         String phone = scanner.nextLine();
 
         customers.add(new Customer(name, email, phone));
-        System.out.println("Customer added.");
+        System.out.println("\uD83D\uDE00 Customer added.");
         System.out.println("#######################################################################");
     }
 
@@ -76,6 +94,10 @@ public class CustomerView {
             System.out.println(customer);
         }
 
+        if (customers.isEmpty()) {
+            System.out.println("\uD83D\uDE14 No customers found.");
+        }
+
         if (inOtherView) {
             System.out.println("--------------");
         } else {
@@ -88,19 +110,30 @@ public class CustomerView {
         System.out.println("########################### - Update customer: - ###########################");
         viewCustomers(true);
 
-        System.out.print("Enter customer ID to update: ");
+        System.out.print("⌨ Enter customer ID to update: ");
         int id = scanner.nextInt();
         scanner.nextLine();  // Consume newline
 
         for (Customer customer : customers) {
             if (customer.getId() == id) {
-                System.out.print("Enter new customer name: ");
+                System.out.print("⌨ Enter new customer name: ");
                 customer.setName(scanner.nextLine());
-                System.out.print("Enter new customer email: ");
-                customer.setEmail(scanner.nextLine());
-                System.out.print("Enter new customer phone: ");
+
+                // validate email after set it to the customer
+                while (true) {
+                    System.out.print("⌨ Enter new customer email: ");
+                    String userEmail = scanner.nextLine();
+                    if (validate(userEmail)) {
+                        customer.setEmail(userEmail);
+                        break;
+                    } else {
+                        System.out.println("\uD83D\uDE14 Invalid email. Please try again.");
+                    }
+                }
+
+                System.out.print("⌨ Enter new customer phone: ");
                 customer.setPhone(scanner.nextLine());
-                System.out.println("Customer updated.");
+                System.out.println("\uD83D\uDE00 Customer updated.");
                 System.out.println("#####################################################################");
                 return;
             }
@@ -113,14 +146,19 @@ public class CustomerView {
         clearScreen();
         System.out.println("########################### - Delete article: - ###########################");
         viewCustomers(true);
-        System.out.print("Enter customer ID to delete: ");
-        int id = scanner.nextInt();
+        System.out.print("⌨ Enter article ID to delete or 'I' to exit: ");
+        var id = scanner.nextLine();
 
-        var result = customers.removeIf(customer -> customer.getId() == id);
+        if (id.equals("I") || id.equals("i")) {
+            System.out.println("\uD83D\uDE2D Operation finished");
+            return;
+        }
+
+        var result = customers.removeIf(customer -> customer.getId() == Integer.parseInt(id));
         if (result) {
-            System.out.println("Customer deleted.");
+            System.out.println("\uD83D\uDE00 Customer deleted.");
         } else {
-            System.out.printf("Customer not found with this ID {%s}.%n", id);
+            System.out.printf("\uD83D\uDE14 Customer not found with this ID {%s}.%n", id);
         }
         System.out.println("###########################################################################");
     }
